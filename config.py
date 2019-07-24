@@ -1,13 +1,4 @@
 import os
 
-# Reddit Credentials
-reddit_username = os.environ.get('REDDIT_USERNAME')
-reddit_password = os .environ.get('REDDIT_PASSWORD')
-client_id = os.environ.get('REDDIT_CID')
-client_secret = os.environ.get('REDDIT_CSECRET')
-
-
-# App Settings
-PORT = 3000
-SECRET_KEY = '3453KJA9S8D7AS3453FASAD1651'
-WTF_CSRF_ENABLED = False
+REDDIT_CLIENT_ID = os.environ.get('REDDIT_CLIENT_ID')
+REDDIT_CLIENT_SECRET = os.environ.get('REDDIT_CLIENT_SECRET')

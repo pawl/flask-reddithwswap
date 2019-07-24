@@ -1,107 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>HW Search Flask</title>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="../static/css/styles.css">
+  <meta charset="utf-8">
+  <title>heckingoodboys</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+
+  <!-- Link Swiper's CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.0/css/swiper.min.css" integrity="sha256-XwfUNXGiAjWyUGBhyXKdkRedMrizx1Ejqo/NReYNdUE=" crossorigin="anonymous" />
+
+  <!-- Demo styles -->
+  <style>
+    html, body {
+      position: relative;
+      height: 100%;
+    }
+    body {
+      background: #000;
+      font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color:#000;
+      margin: 0;
+      padding: 0;
+    }
+    .swiper-container {
+      width: 100%;
+      height: 100%;
+    }
+    .swiper-slide {
+      text-align: center;
+      font-size: 18px;
+      background: #000;
+
+    }
+    .swiper-slide img {
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 100%;
+      -ms-transform: translate(-50%, -50%);
+      -webkit-transform: translate(-50%, -50%);
+      -moz-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      position: absolute;
+      left: 50%;
+      top: 50%;
+    }
+  </style>
 </head>
-
 <body>
-
-    <div class="container-fluid">
-        <div class="container" id="header">
-            <div class="page-header well">
-                <h1>
-                    <a href="#">
-                        <span class="glyphicon glyphicon-search">&nbsp</span>
-                    </a>
-                    Reddit HW Search Flask App
-                </h1>
-                <p>Search for items within Reddit HWSwap</p>
-            </div>
+  <!-- Swiper -->
+  <div class="swiper-container">
+    <div class="swiper-wrapper">
+      {% for image_url in image_urls %}
+        <div class="swiper-slide">
+          <img data-src="{{ image_url }}" class="swiper-lazy">
+          <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
         </div>
-
-        <div class="container">
-            <div class="form-group">
-                <form class="" action="{{ url_for('index')}}" method="post">
-                    <label>What are you looking for?</label>
-                    <input type="text" class="form-control" name="query" required="required">
-                    <p class="help-block">Enter an item name.</p>
-                    <button class="btn btn-success" type="submit" name="button">Search</button>
-                </form>
-            </div>
-            <br /> {% if msg %}
-            <span class="msg"> {{ msg }} </span> {% endif %}
-        </div>
-
-        <hr>
-
-        <div class="container">
-            {% if data %}
-            <table data-toggle="table" data-sort-order="desc" data-sorter="htmlSorter">
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th data-sortable="true">Location</th>
-                        <th data-sortable="true">Type of Transaction</th>
-                        <th>Description</th>
-                        <th>URL</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for key, value in data.items()%}
-                    <tr>
-                        <td>
-                            {{ key | safe }}
-                        </td>
-                        <td>
-                            {{ value['location'] | safe }}
-                        </td>
-                        <td>
-                            {{ value['type'] | safe }}
-                        </td>
-                        <td>
-                            {{ value['text'] | safe }}
-                        </td>
-                        <td>
-                            <a href="{{ value['url'] | safe }}" target="_blank">Take me there!</a>
-                        </td>
-                        {% endfor %}
-                    </tr>
-                </tbody>
-            </table>
-            {% endif %}
-            <small><span id="searchAgain"></span></small>
-        </div>
+      {% endfor %}
     </div>
-    <hr>
-    <footer>
-        <p>Repo for this code in <a href="https://github.com/RorixRebel/flask-reddithwswap">Github</a> </p>
-        <p>Site created by: <b>Miguel Valdes</b> </p>
-    </footer>
+  </div>
 
-    <!-- Jquery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <!-- Swiper JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.0/js/swiper.min.js" integrity="sha256-uckMYBvIGtce2L5Vf/mwld5arpR5JuhAEeJyjPZSUKY=" crossorigin="anonymous"></script>
 
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
-
-    <!-- Latest compiled and minified Locales -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/locale/bootstrap-table-zh-CN.min.js"></script>
-
-
-
+  <!-- Initialize Swiper -->
+  <script>
+    var swiper = new Swiper('.swiper-container', {
+      // Enable lazy loading
+      lazy: true
+    });
+  </script>
 </body>
-
 </html>

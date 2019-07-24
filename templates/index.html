@@ -61,13 +61,8 @@
   <!-- Initialize Swiper -->
   <script>
     var swiper = new Swiper('.swiper-container', {
-      // Disable preloading of all images
-      preloadImages: false,
-      // Enable lazy loading
-      lazy: {
-        // preload the next few images
-        loadPrevNext: true,
-        loadPrevNextAmount: 3
+      autoplay: {
+        delay: 5000,
       },
       // allow keyboard navigation
       keyboard: {
@@ -79,10 +74,12 @@
       // virtual slides to improve memory usage
       virtual: {
         slides: [
-          {% for image_url in image_urls %}
-            '<div class="swiper-slide"><img data-src="{{ image_url }}" class="swiper-lazy"><div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div></div>',
-          {% endfor %}
+          {%- for image_url in image_urls -%}
+            '<div class="swiper-slide"><img src="{{ image_url }}"></div>',
+          {%- endfor -%}
         ],
+        addSlidesBefore: 5,
+        addSlidesAfter: 5
       },
     });
   </script>

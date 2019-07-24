@@ -66,8 +66,20 @@
   <!-- Initialize Swiper -->
   <script>
     var swiper = new Swiper('.swiper-container', {
+      // Disable preloading of all images
+      preloadImages: false,
       // Enable lazy loading
-      lazy: true
+      lazy: {
+        // preload the next few images
+        loadPrevNext: true
+      },
+      // allow keyboard navigation
+      keyboard: {
+        enabled: true,
+        onlyInViewport: false
+      },
+      // mouse wheel too - why not
+      mousewheelControl: true
     });
   </script>
 </body>

@@ -4,7 +4,6 @@ from flask_caching import Cache
 
 import config
 
-# Flask app
 app = Flask(__name__)
 app.config.from_pyfile("config.py")
 
@@ -15,6 +14,7 @@ cache = Cache(app, config=cache_config)
 
 
 def parse_image_url(url):
+    """Parses the reddit post url and return an image url if it's an image"""
     image_url = None
     if url.endswith(".jpg") or url.endswith(".png"):
         image_url = url
@@ -27,6 +27,7 @@ def parse_image_url(url):
 
 
 def get_images():
+    """Gets image urls from reddit."""
     reddit = praw.Reddit(
         client_id=config.REDDIT_CLIENT_ID,
         client_secret=config.REDDIT_CLIENT_SECRET,

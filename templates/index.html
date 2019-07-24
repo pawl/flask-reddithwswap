@@ -51,12 +51,7 @@
   <!-- Swiper -->
   <div class="swiper-container">
     <div class="swiper-wrapper">
-      {% for image_url in image_urls %}
-        <div class="swiper-slide">
-          <img data-src="{{ image_url }}" class="swiper-lazy">
-          <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
-        </div>
-      {% endfor %}
+
     </div>
   </div>
 
@@ -80,7 +75,15 @@
         onlyInViewport: false
       },
       // mouse wheel too - why not
-      mousewheelControl: true
+      mousewheelControl: true,
+      // virtual slides to improve memory usage
+      virtual: {
+        slides: [
+          {% for image_url in image_urls %}
+            '<div class="swiper-slide"><img data-src="{{ image_url }}" class="swiper-lazy"><div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div></div>',
+          {% endfor %}
+        ],
+      },
     });
   </script>
 </body>

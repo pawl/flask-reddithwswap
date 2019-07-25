@@ -74,13 +74,13 @@
       // virtual slides to improve memory usage
       virtual: {
         slides: [
-          {%- for image_url in image_urls -%}
-            '<div class="swiper-slide"><img src="{{ image_url }}"></div>',
+          {%- for media in all_media -%}
+            '<div class="swiper-slide">{% if media.image_url %}<img src="{{ media.image_url }}">{% elif media.video_url %}<video src="{{ media.video_url }}" autoplay muted></video>{% endif %}</div>',
           {%- endfor -%}
         ],
         addSlidesBefore: 5,
         addSlidesAfter: 5
-      },
+      }
     });
   </script>
 </body>

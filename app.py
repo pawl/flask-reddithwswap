@@ -16,27 +16,43 @@ else:
 cache = Cache(app, config=cache_config)
 
 
-def parse_image_url(item):
-    """Parses the reddit post url and return an image url if it's an image"""
-    url = item.url
-
+class Media:
+    """Image or video to be displayed on a slide."""
+    title = None
     image_url = None
-    if hasattr(item, "preview"):
-        image_url = item.preview['images'][0]['source']['url']
-    # disable non-reddit/imgur urls for now (to optimize mobile load speed)
-    # elif url.endswith((".jpg", ".png", ".jpeg")):
-    #     image_url = url
-    elif ("imgur.com" in url) and ("/a/" not in url):
-        if url.endswith("/new"):
-            url = url.rsplit("/", 1)[0]
-        imgur_post_id = url.rsplit("/", 1)[1].rsplit(".", 1)[0]
-        # h = Huge Thumbnail (1024x1024)
-        image_url = "http://i.imgur.com/" + imgur_post_id + "h.jpg"
-    return image_url
+    video_url = None
+
+    def __init__(self, reddit_post):
+        self.title = reddit_post.title
+
+        # determine the reddit post's image or video url, if it has one
+        # TODO: support https://v.redd.it/i1058cwgfac31
+        # TODO: support https://gfycat.com/welldocumentedunderstatedchevrotain
+        url = reddit_post.url
+        if ("imgur.com" in url) and url.endswith(".gifv"):
+            # imgur gifv
+            # just removing "v" from gifv doesn't work, need to use mp4 video
+            self.video_url = url[:-4] + 'mp4'
+        elif ("imgur.com" not in url) and url.endswith((".jpg", ".png", ".jpeg")):
+            # non-imgur images (example: https://i.redd.it/f52s327v59c31.jpg)
+            # only support images with previews
+            if hasattr(reddit_post, "preview"):
+                self.image_url = reddit_post.preview['images'][0]['source']['url']
+        elif ("imgur.com" in url) and ("/a/" not in url):
+            # imgur images (example: https://imgur.com/X5Jl2xd)
+            if url.endswith("/new"):
+                url = url.rsplit("/", 1)[0]
+            imgur_post_id = url.rsplit("/", 1)[1].rsplit(".", 1)[0]
+            # h = Huge Thumbnail (1024x1024)
+            self.image_url = "http://i.imgur.com/" + imgur_post_id + "h.jpg"
+
+    def __hash__(self):
+        """Makes this class unique in a set()."""
+        return hash((self.title,))
 
 
-def get_images():
-    """Gets image urls from reddit."""
+def get_media():
+    """Gets image and video urls from reddit."""
     reddit = praw.Reddit(
         client_id=config.REDDIT_CLIENT_ID,
         client_secret=config.REDDIT_CLIENT_SECRET,
@@ -47,19 +63,19 @@ def get_images():
         .multireddit('heckingoodboys', 'heckingoodboys') \
         .hot(limit=limit)
 
-    image_urls = set()
-    for item in reddit_posts:
-        image_url = parse_image_url(item)
-        if image_url:
-            image_urls.add(image_url)
-    return image_urls
+    all_media = set()
+    for reddit_post in reddit_posts:
+        media = Media(reddit_post)
+        if media.video_url or media.image_url:
+            all_media.add(media)
+    return all_media
 
 
 @app.route('/')
-@cache.cached(timeout=86400)
+@cache.cached(timeout=3600)
 def index():
-    image_urls = get_images()
-    return render_template("index.html", image_urls=image_urls)
+    all_media = get_media()
+    return render_template("index.html", all_media=all_media)
 
 
 if __name__ == "__main__":

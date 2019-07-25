@@ -39,7 +39,13 @@ class Media:
             # non-imgur images (example: https://i.redd.it/f52s327v59c31.jpg)
             # only support images with previews
             if hasattr(reddit_post, "preview"):
-                self.image_url = reddit_post.preview['images'][0]['source']['url']
+                # get largest preview (source image is often too big)
+                max_width = 0
+                for resolution in reddit_post.preview['images'][0]['resolutions']:
+                    width = resolution['width']
+                    if max_width < width:
+                        max_width = width
+                        self.image_url = resolution['url']
         elif ("imgur.com" in url) and ("/a/" not in url):
             # imgur images (example: https://imgur.com/X5Jl2xd)
             if url.endswith("/new"):

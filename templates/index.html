@@ -75,7 +75,7 @@
       virtual: {
         slides: [
           {%- for media in all_media -%}
-            '<div class="swiper-slide">{% if media.image_url %}<img src="{{ media.image_url }}">{% elif media.video_url %}<video src="{{ media.video_url }}" autoplay muted playsinline></video>{% endif %}</div>',
+            '<div class="swiper-slide">{% if media.image_url %}<img src="{{ media.image_url }}">{% elif media.video_url %}<video src="{{ media.video_url }}" autoplay loop muted playsinline></video>{% endif %}</div>',
           {%- endfor -%}
         ],
         addSlidesBefore: 1,

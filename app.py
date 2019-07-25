@@ -21,9 +21,11 @@ class Media:
     title = None
     image_url = None
     video_url = None
+    permalink = None
 
     def __init__(self, reddit_post):
         self.title = reddit_post.title
+        self.permalink = reddit_post.permalink
 
         # determine the reddit post's image or video url, if it has one
         # TODO: support https://v.redd.it/i1058cwgfac31

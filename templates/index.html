@@ -61,6 +61,7 @@
   <!-- Initialize Swiper -->
   <script>
     var swiper = new Swiper('.swiper-container', {
+      speed: 1000,
       autoplay: {
         delay: 5000,
       },
@@ -75,7 +76,7 @@
       virtual: {
         slides: [
           {%- for media in all_media -%}
-            '<div class="swiper-slide">{% if media.image_url %}<img src="{{ media.image_url }}">{% elif media.video_url %}<video src="{{ media.video_url }}" autoplay muted></video>{% endif %}</div>',
+            '<div class="swiper-slide">{% if media.image_url %}<img src="{{ media.image_url }}">{% elif media.video_url %}<video src="{{ media.video_url }}" autoplay muted playsinline></video>{% endif %}</div>',
           {%- endfor -%}
         ],
         addSlidesBefore: 1,

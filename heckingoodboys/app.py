@@ -2,18 +2,10 @@ import praw
 from flask import Flask, render_template
 from flask_caching import Cache
 
-import config
-
 app = Flask(__name__)
 app.config.from_pyfile("config.py")
 
-
-cache_config = {'CACHE_DIR': 'app_cache'}
-if app.debug:
-    cache_config['CACHE_TYPE'] = 'null'
-else:
-    cache_config['CACHE_TYPE'] = 'filesystem'
-cache = Cache(app, config=cache_config)
+cache = Cache(app)
 
 
 class Media:
@@ -62,8 +54,8 @@ class Media:
 def get_media():
     """Gets image and video urls from reddit."""
     reddit = praw.Reddit(
-        client_id=config.REDDIT_CLIENT_ID,
-        client_secret=config.REDDIT_CLIENT_SECRET,
+        client_id=app.config['REDDIT_CLIENT_ID'],
+        client_secret=app.config['REDDIT_CLIENT_SECRET'],
         user_agent='praw')
 
     limit = 100 if app.debug else 1000
@@ -83,7 +75,7 @@ def get_media():
 @cache.cached(timeout=3600)
 def index():
     all_media = get_media()
-    return render_template("index.html", all_media=all_media)
+    return render_template("base.html", all_media=all_media)
 
 
 if __name__ == "__main__":

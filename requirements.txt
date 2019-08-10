@@ -10,6 +10,7 @@ jinja2==2.10.1
 markupsafe==1.1.1
 praw==6.3.1
 prawcore==1.0.1
+redis==3.3.6
 requests==2.22.0
 six==1.12.0
 update-checker==0.16

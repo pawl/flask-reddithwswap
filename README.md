@@ -14,7 +14,11 @@ You must get a reddit api client id and secret key. Instructions: https://praw.r
 
 ## Running locally ##
 
-    REDDIT_CLIENT_ID=<id> REDDIT_CLIENT_SECRET=<secret> FLASK_DEBUG=TRUE FLASK_APP=heckingoodboys.app flask run
+    REDDIT_CLIENT_ID=<id> REDDIT_CLIENT_SECRET=<secret> FLASK_DEBUG=TRUE FLASK_APP=heckingoodboys flask run
+
+## Running tests ##
+
+    python setup.py test
 
 ## TODO ##
 

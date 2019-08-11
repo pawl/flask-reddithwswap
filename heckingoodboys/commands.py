@@ -1,11 +1,8 @@
 import praw
-from flask import Flask, render_template
-from flask_caching import Cache
 
-app = Flask(__name__)
-app.config.from_pyfile("config.py")
+from heckingoodboys import app, cache
 
-cache = Cache(app)
+MEDIA_CACHE_KEY = 'all_media'
 
 
 class Media:
@@ -47,12 +44,21 @@ class Media:
             self.image_url = "http://i.imgur.com/" + imgur_post_id + "h.jpg"
 
     def __hash__(self):
-        """Makes this class unique in a set()."""
+        """Prevents 'TypeError: unhashable type' error when using Media in a set()."""
         return hash((self.title,))
+
+    def __eq__(self, other):
+        """Makes this class unique in a set()."""
+        if not isinstance(other, type(self)):
+            return False
+
+        return self.title == other.title
 
 
 def get_media():
     """Gets image and video urls from reddit."""
+    app.logger.info('getting media from reddit...')
+
     reddit = praw.Reddit(
         client_id=app.config['REDDIT_CLIENT_ID'],
         client_secret=app.config['REDDIT_CLIENT_SECRET'],
@@ -68,15 +74,14 @@ def get_media():
         media = Media(reddit_post)
         if media.video_url or media.image_url:
             all_media.add(media)
+
+    app.logger.info('successfully got media from reddit')
+
     return all_media
 
 
-@app.route('/')
-@cache.cached(timeout=3600)
-def index():
-    all_media = get_media()
-    return render_template("base.html", all_media=all_media)
-
-
-if __name__ == "__main__":
-    app.run()
+@app.cli.command()
+def populate_cache():
+    app.logger.info('populating cache...')
+    cache.set(MEDIA_CACHE_KEY, get_media())
+    app.logger.info('successfully populated cache')

@@ -8,10 +8,19 @@ provider:
   profile: default
   timeout: 30
   environment:
+    FLASK_APP: "heckingoodboys"
     REDDIT_CLIENT_ID: ${ssm:REDDIT_CLIENT_ID}
     REDDIT_CLIENT_SECRET: ${ssm:REDDIT_CLIENT_SECRET}
     REDIS_URL:
       "Fn::Join": ["", ["redis://", "Fn::Join": [":", ["Fn::GetAtt": [ServerlessElasticacheCluster, RedisEndpoint.Address], "Fn::GetAtt": [ServerlessElasticacheCluster, RedisEndpoint.Port]]]]]
+  usagePlan:
+    quota:
+      limit: 5000
+      offset: 2
+      period: MONTH
+    throttle:
+      burstLimit: 200
+      rateLimit: 100
 
 package:
   exclude:
@@ -19,7 +28,12 @@ package:
 
 functions:
   cron:
-    handler: heckingoodboys.commands.get_media
+    handler: heckingoodboys/commands.populate_cache_handler
+    vpc:
+      securityGroupIds:
+        - "Fn::GetAtt": ServerlessSecurityGroup.GroupId
+      subnetIds:
+        - Ref: ServerlessPrivateSubnetA
     events:
       - schedule: rate(4 hours)
   app:

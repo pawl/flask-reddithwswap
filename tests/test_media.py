@@ -3,10 +3,10 @@ from unittest.mock import Mock
 
 from praw.models import Submission
 
-from heckingoodboys.commands import Media
+from heckingoodboys.media import Media
 
 
-class TestCommands(unittest.TestCase):
+class TestMedia(unittest.TestCase):
     def test_media(self):
         submission = Mock(spec=Submission)
         submission.id = 'coh6dn'

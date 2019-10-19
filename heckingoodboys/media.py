@@ -80,8 +80,9 @@ def get_media():
     return all_media
 
 
-@app.cli.command()
-def populate_cache():
+def populate_cache_handler(event, context):
+    """Handler to allow AWS lambda function to call function with args"""
     app.logger.info('populating cache...')
     cache.set(MEDIA_CACHE_KEY, get_media())
     app.logger.info('successfully populated cache')
+    return {'message': 'success'}

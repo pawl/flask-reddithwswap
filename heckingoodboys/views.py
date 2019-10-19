@@ -1,7 +1,7 @@
 from flask import render_template
 
 from heckingoodboys import app, cache
-from heckingoodboys.commands import get_media, MEDIA_CACHE_KEY
+from heckingoodboys.media import get_media, MEDIA_CACHE_KEY
 
 
 @app.route('/')

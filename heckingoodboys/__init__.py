@@ -6,4 +6,4 @@ app.config.from_pyfile("config.py")
 
 cache = Cache(app)
 
-from heckingoodboys import views, commands  # noqa: F401
+from heckingoodboys import views  # noqa: F401

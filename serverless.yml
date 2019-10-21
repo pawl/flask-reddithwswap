@@ -13,6 +13,7 @@ provider:
     REDDIT_CLIENT_SECRET: ${ssm:REDDIT_CLIENT_SECRET}
     REDIS_URL:
       "Fn::Join": ["", ["redis://", "Fn::Join": [":", ["Fn::GetAtt": [ServerlessElasticacheCluster, RedisEndpoint.Address], "Fn::GetAtt": [ServerlessElasticacheCluster, RedisEndpoint.Port]]]]]
+    STRIP_STAGE_PATH: yes
   usagePlan:
     quota:
       limit: 5000
@@ -173,6 +174,7 @@ resources:
 plugins:
   - serverless-python-requirements
   - serverless-wsgi
+  - serverless-domain-manager
 
 custom:
   wsgi:
@@ -182,3 +184,6 @@ custom:
     dockerizePip: non-linux
   config:
     CACHE_INSTANCE_SIZE: cache.t2.micro
+  customDomain:
+    domainName: heckingoodboys.com
+    createRoute53Record: true

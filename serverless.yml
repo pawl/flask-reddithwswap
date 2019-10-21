@@ -22,10 +22,22 @@ provider:
     throttle:
       burstLimit: 200
       rateLimit: 100
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 'lambda:InvokeFunction'
+      Resource:
+      - Fn::Join:
+        - ':'
+        - - arn:aws:lambda
+          - Ref: AWS::Region
+          - Ref: AWS::AccountId
+          - function:${self:service}-${opt:stage, self:provider.stage}-*
 
 package:
   exclude:
     - node_modules/**
+    - '.git/**'
 
 functions:
   cron:
@@ -47,6 +59,8 @@ functions:
     events:
       - http: ANY /
       - http: 'ANY {proxy+}'
+    warmup:
+      enabled: true
 
 resources:
   Resources:
@@ -175,6 +189,7 @@ plugins:
   - serverless-python-requirements
   - serverless-wsgi
   - serverless-domain-manager
+  - serverless-plugin-warmup
 
 custom:
   wsgi:
@@ -187,3 +202,6 @@ custom:
   customDomain:
     domainName: heckingoodboys.com
     createRoute53Record: true
+  warmup:
+    timeout: 20
+    prewarm: true

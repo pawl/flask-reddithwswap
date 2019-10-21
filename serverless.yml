@@ -2,7 +2,7 @@ service: serverless-flask-redis-vpc-nat
 
 provider:
   name: aws
-  runtime: python3.6
+  runtime: python3.7
   region: us-east-1
   stage: development
   profile: default
@@ -29,7 +29,7 @@ package:
 
 functions:
   cron:
-    handler: heckingoodboys/commands.populate_cache_handler
+    handler: heckingoodboys/media.populate_cache_handler
     vpc:
       securityGroupIds:
         - "Fn::GetAtt": ServerlessSecurityGroup.GroupId

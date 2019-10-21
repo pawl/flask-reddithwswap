@@ -16,7 +16,7 @@ provider:
     STRIP_STAGE_PATH: yes
   usagePlan:
     quota:
-      limit: 5000
+      limit: 20000
       offset: 2
       period: MONTH
     throttle:

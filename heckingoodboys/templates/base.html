@@ -50,9 +50,7 @@
 <body>
   <!-- Swiper -->
   <div class="swiper-container">
-    <div class="swiper-wrapper">
-
-    </div>
+    <div class="swiper-wrapper"></div>
   </div>
 
   <!-- Swiper JS -->
@@ -75,7 +73,7 @@
       virtual: {
         slides: [
           {%- for media in all_media -%}
-            '<div class="swiper-slide">{% if media.image_url %}<img src="{{ media.image_url }}">{% elif media.video_url %}<video src="{{ media.video_url }}" autoplay loop muted playsinline></video>{% endif %}<!-- {{ media.permalink }}  --></div>',
+            '{% if media.image_url %}<img src="{{ media.image_url }}">{% elif media.video_url %}<video src="{{ media.video_url }}" autoplay loop muted playsinline></video>{% endif %}<!-- {{ media.permalink }}  -->',
           {%- endfor -%}
         ],
         addSlidesBefore: 1,

@@ -4,3 +4,6 @@ __pycache__
 *.egg-info/
 node_modules/
 .serverless/
+.env.acme-companion
+.env
+.nginx/

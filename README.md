@@ -29,8 +29,8 @@ You must get a reddit api client id and secret key. Instructions: https://praw.r
 
 ## Deploying (docker-compose) ##
 [Install docker](https://docs.docker.com/get-docker/) and run:
-1. `mv .env.acme-companion.example .env.acme-companion`
+1. `cp .env.acme-companion.example .env.acme-companion`
 1. In the new `.env.acme-companion` file, fill in your `DEFAULT_EMAIL`
-1. `mv .env.example .env`
+1. `cp .env.example .env`
 1. In the new `.env` file, fill in your `REDDIT_CLIENT_ID` and `REDDIT_CLIENT_SECRET`.
 1. `docker-compose up`
